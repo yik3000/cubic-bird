@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+    h1 课堂
+    hr
+    .row
+        .col-md-6
+            a.btn.btn-raised(href='classroom/add', role='button') Add
+            table.table
+                thead
+                    tr
+                        td 课堂名
+                        td 教练
+                        td 学生
+                tbody
+                    each classroom in data
+                        tr
+                            td
+                                a(href='classroom/edit/'+classroom._id)= classroom.name
+                            td
+                                ul
+                                    each coach in classroom.coaches
+                                        li=coach.profile.name
+                            td
+                                ul
+                                    each student in classroom.students
+                                        li=student.name
+            

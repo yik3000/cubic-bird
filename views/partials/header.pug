@@ -1,0 +1,43 @@
+.navbar.navbar-light.fixed-top.navbar-expand-lg
+  .container
+    a.navbar-brand(href='/')
+      i.fas.fa-cube
+      | Cubic Nest
+    button.navbar-toggler(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+      span.sr-only Toggle navigation
+      span.navbar-toggler-icon
+    .collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li.nav-item(class=(title === 'Coaches') ? 'active' : undefined)
+          a.nav-link(href='/coach') 教练
+        li.nav-item(class=(title === 'Birds') ? 'active' : undefined)
+          a.nav-link(href='/bird') 学生
+        li.nav-item(class=(title === 'Classroom') ? 'active' : undefined)
+          a.nav-link(href='/classroom') 课堂
+        li.nav-item(class=(title === 'Course') ? 'active' : undefined)
+          a.nav-link(href='/course') 课程管理
+        li.nav-item(class=(title === 'Curriculumn') ? 'active' : undefined)
+          a.nav-link(href='/curriculumn') 课程体系
+        li.nav-item(class=(title === 'Rating') ? 'active' : undefined)
+          a.nav-link(href='/rating') 指标
+      ul.nav.navbar-nav.ml-auto
+        if !user
+          li.nav-item(class=(title === 'Login') ? 'active' : undefined)
+            a.nav-link(href='/login') Login
+          li.nav-item(class=(title === 'Create Account') ? 'active' : undefined)
+            a.nav-link(href='/signup') Create Account
+        else
+          li.dropdown(class=(title === 'Account Management') ? 'active' : undefined).nav-item
+            a.dropdown-toggle.nav-link(href='#', data-toggle='dropdown')
+              if user.profile.picture
+                img(src=user.profile.picture)
+              else
+                img(src=user.gravatar(60))
+              span= user.profile.name || user.email || user.id
+              i.caret
+            ul.dropdown-menu
+              li.dropdown-item
+                a(href='/account') My Account
+              li.divider.dropdown-item
+              li.dropdown-item
+                a(href='/logout') Logout

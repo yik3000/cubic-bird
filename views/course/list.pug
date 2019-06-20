@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+    h1 课程设计
+    hr
+    .row
+        .col-md-6
+            a.btn.btn-raised(href='course/add', role='button') Add
+            table.table
+                thead
+                    tr
+                        td 课程
+                tbody
+                    each course in data
+                        tr
+                            td
+                                a(href='course/edit/'+course._id)= course.name

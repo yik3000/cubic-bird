@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+    h1 课堂
+    hr
+    .row
+        .col-md-6
+            table.table
+                thead
+                    tr
+                        td 能理范围
+                tbody
+                    each ratingGroup in data
+                        tr
+                            td
+                                =ratingGroup.name
+            form(name="group",action="rating/group")
+                label(for="groupName")
+                input(type="text",name="groupName")
+                input(type="submit", action="group")
+
+        a.btn.btn-raised(href='classroom/add', role='button') Add
+
+block script
+    script.
+        $(function(){
+
+             $('form[name="group"]').submit(function(e) { 
+                e.preventDefault();
+                var form = $(this);
+                $.post(form.attr('action'), { 
+                    _csrf:"#{_csrf}",
+                    groupName: form.find("input[name='groupName']").val(),
+                }, function(data){
+                    console.log(data);
+                }, "text" );
+            });
+
+
+        })

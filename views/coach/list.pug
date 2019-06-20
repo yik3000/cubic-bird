@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+    h1 Faculty
+    hr
+    .row
+        .col-md-6
+            a.btn.btn-raised(href='coach/add', role='button') Add
+    .row
+        table.table
+            thead
+                tr
+                    td 用户名
+                    td 简称
+            tbody
+                each teacher in data
+                    tr
+                        td
+                            a(href='coach/edit/'+teacher._id)= teacher.username
+                        td
+                            =teacher.profile.name
+
+

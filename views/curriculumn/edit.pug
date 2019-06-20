@@ -1,0 +1,61 @@
+extends ../layout
+
+block script
+  script(src="/js/modules/picklist.js")
+  script.
+    $(function(){
+
+        var courses = !{JSON.stringify(courses)}
+        var includedCourses = !{JSON.stringify(includedCourses)}
+        
+        includedCourses = includedCourses.map(function(x){
+          x.label = x.name
+          return x;
+        })
+        
+        
+        courses = courses.map(function(item){
+          item.label = item.name;
+          return item;
+        })
+        
+        var classPickList = new PickList();
+        classPickList.init('.target-list.classes', '.source-list.classes', includedCourses ,courses);	
+        
+        $("#btn-save").on("click",function(event){
+            var courseData = classPickList.data();
+            $('#classes').val(JSON.stringify(courseData))
+            $('form').submit()
+    		})
+    })
+
+block content
+  h1 更新
+  
+  hr
+  .row
+    .col-md-6
+        form(id="edit-bird-form", method="POST")
+            input(type="hidden", name="classes", id="classes")
+            input(type='hidden', name='_csrf', value=_csrf)            
+            label(for="name") 名字
+                input(name="name", value=data.name, placeholder='名字')
+  .row
+    .col-md-6
+      div 选中课程
+      .pick-list
+        table.table.target-list.classes
+
+    .col-md-6
+      div 总课程
+      .pick-list
+        table.table.source-list.classes
+
+          each course in courses
+              tr
+                  td
+                      div=course.name
+  .btn.btn-primary(id="btn-save")
+    i.fa.fa-user
+      | 更新
+    

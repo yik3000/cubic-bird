@@ -1,0 +1,53 @@
+extends ../layout
+
+block script
+  script(src="/js/modules/picklist.js")
+  script.
+    $(function(){
+
+        var courses = !{JSON.stringify(data.courses)}
+        var allCourses = !{JSON.stringify(courses)}
+
+        courses = courses.map(function(x){
+          x.label = x.name
+          return x;
+        })
+        allCourses =  allCourses.map(function(x){
+          x.label = x.name;
+          return x;
+        })    
+       
+        var classPickList = new PickList();
+        classPickList.init('.target-list.classes', '.source-list.classes', courses ,allCourses);	
+     
+        $("#btn-save").on("click",function(event){
+            var courseData = classPickList.data();
+            $('#classes').val(JSON.stringify(courseData))
+
+            $('form').submit()
+    		})
+    })
+
+block content
+  h1 新班
+  hr
+  .row
+    .col-md-6
+        form(id="add-coach-form", method="POST")
+          input(type="hidden", name="classes", id="classes")
+          input(type='hidden', name='_csrf', value=_csrf)           
+          .row
+            .col-md-6
+              div 选中课程
+              .pick-list
+                table.table.target-list.classes
+
+            .col-md-6
+              div 总课程
+              .pick-list
+                table.table.source-list.classes
+                  
+         
+          .btn.btn-primary(id="btn-save")
+            i.fa.fa-user
+              | 更新

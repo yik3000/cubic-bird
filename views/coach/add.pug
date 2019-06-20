@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  h1 教练鹰
+  hr
+  .row
+    .col-md-6
+        form(id="add-coach-form", method="POST")
+            input(type='hidden', name='_csrf', value=_csrf)
+            label(for="username")
+                input(name="username", value="", placeholder="用户名")
+            label(for="name")
+                input(name="name", value='', placeholder='名字')
+            label(for="password")
+                input(name="password" value="", placeholder="密码")
+            button(type = "submit") 确定

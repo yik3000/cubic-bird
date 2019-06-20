@@ -1,0 +1,26 @@
+version: '3'
+services:
+  mongo:
+    restart: always    
+    image: mongo:3.6
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - 27030:27030
+    command: mongod --logpath=/dev/null
+  web:
+    restart: always
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+     - "8080:8080"
+    environment:
+     - MONGODB_URI=mongodb://mongo:27030/test 
+    links:
+     - mongo 
+    depends_on: 
+     - mongo 
+    volumes:
+     - .:/app
+     - /app/node_modules

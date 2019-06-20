@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+    h1 小鸟
+    hr
+    .row
+        .col-md-6
+            a.btn.btn-raised(href='bird/add', role='button') Add
+    .row
+        table.table
+            thead
+                tr
+                    td 用户名
+                    td 简称
+            tbody
+                each student in data
+                    tr
+                        td
+                            a(href='bird/edit/'+student._id)= student.name
+                      
+
+

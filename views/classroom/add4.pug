@@ -1,0 +1,53 @@
+extends ../layout
+
+block script
+  script(src="/js/modules/picklist.js")
+  script.
+    $(function(){
+
+        var students = !{JSON.stringify(data.students)}
+        var allStudents = !{JSON.stringify(students)}
+
+        students = students.map(function(x){
+          x.label = x.name
+          return x;
+        })
+        allStudents =  allStudents.map(function(x){
+          x.label = x.name;
+          return x;
+        })    
+       
+        var classPickList = new PickList();
+        classPickList.init('.target-list.students', '.source-list.students', students ,allStudents);	
+     
+        $("#btn-save").on("click",function(event){
+            var studentsData = classPickList.data();
+            $('#students').val(JSON.stringify(studentsData))
+
+            $('form').submit()
+    		})
+    })
+
+block content
+  h1 学生选择
+  hr
+  .row
+    .col-md-6
+        form(id="add-coach-form", method="POST")
+          input(type="hidden", name="students", id="students")
+          input(type='hidden', name='_csrf', value=_csrf)           
+          .row
+            .col-md-6
+              div 选中辅导
+              .pick-list
+                table.table.target-list.students
+
+            .col-md-6
+              div 所有辅导
+              .pick-list
+                table.table.source-list.students
+                  
+         
+          .btn.btn-primary(id="btn-save")
+            i.fa.fa-user
+              | 更新

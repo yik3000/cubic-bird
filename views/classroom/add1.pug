@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+  h1 新课程
+  hr
+  .row
+    .col-md-6
+        form(id="add-coach-form", method="POST")
+            input(type='hidden', name='_csrf', value=_csrf)
+            select(name="curriculumnId")
+              each course in data
+                option(value=course._id)=course.name
+            button(type = "submit") 确定

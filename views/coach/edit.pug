@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  h1 更新
+  hr
+  .row
+    .col-md-6
+        form(id="edit-coach-form", method="POST")
+            input(type='hidden', name='_csrf', value=_csrf)
+            label(for="username") 用户名
+                input(name="username", value=data.username, placeholder="用户名")
+            label(for="name") 名字
+                input(name="name", value=data.profile.name, placeholder='名字')
+            label(for="roles") 身份
+                select(multiple, name="roles")
+                    for role in roles.list
+                        option(name='roles', selected= data.roles.indexOf(role.id)>-1 ? true:false, value=role.id)=role.name
+            button(type = "submit") 更新

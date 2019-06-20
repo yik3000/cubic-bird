@@ -1,0 +1,75 @@
+extends ../layout
+block head
+    link(rel='stylesheet', href='/js/lib/pickadate/themes/default.css')      
+    link(rel='stylesheet', href='/js/lib/pickadate/themes/default.date.css')      
+
+block content
+    h1 课堂
+    hr
+    form.container-fluid.form-horizontal(method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)           
+        input(type='hidden', name='timetable', value="")           
+        .row
+            .col-md-5
+                div=data.name
+                each course in data.courses
+                    .course(data-course=course._id)
+                        div= course.name
+                        input.date.form-control(type='text', readonly=false, name="date." + course._id  placeholder='修改日期', value=course.date) 
+                        input.time.form-control(type='text', readonly=false, name="time." + course._id  placeholder='修改日期', value=course.date) 
+        .row
+            input(type="submit", value="提交")
+block script
+    script(src='/js/modules/picker.js')
+    script(src='/js/modules/picker.date.js')
+    script(src='/js/modules/picker.time.js')
+    script.
+        $(function(){
+            $('form').submit(function(e) { 
+                e.preventDefault();
+                var form = $(this);
+
+                var timetable = [];
+                $('div[data-course]').each(function(index,course){
+                    timetable.push({
+                        course: $(course).data("course"),
+                        date: $(course).find("input[type='hidden']").first().val(),                     
+                        time: $(course).find("input.time").first().val()
+                    })
+                })
+
+                $.post( form.attr('action'), { 
+                    _csrf:"#{_csrf}",
+                    timetable: timetable 
+                }, function(data){
+                    alert(data); // Alert the return from the server
+                }, "text" );
+            });
+
+            var $dates = $('.course .date').pickadate({
+                format:'mm-dd-yyyy',
+                formatSubmit:'yyyy-mm-dd',
+                min: new Date(),                
+            });
+            $dates.each(function(index,item){
+                var input = $(this).pickadate('picker');
+                input.set('select', $(item).val())
+            })
+            
+          
+            $('.course .time').each((index,item)=>{
+                var input = $(item).pickatime({
+                    format: 'HH:i',
+                    formatLabel: '<b>h</b>:i <!i>a</!i>',
+                    formatSubmit: 'HH:i',
+                    min:[8,0],
+                    max: [22,0],
+                    interval:30,
+                }).pickatime('picker');
+
+                input.set('select', $(item).val())
+              
+            })
+
+
+        })

@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+    h1 课程设计
+    hr
+    a.btn.btn-raised(href='curriculumn/add', role='button') Add
+    .row
+        .col-md-6           
+            table.table
+                thead
+                    tr
+                        td 课程
+                tbody
+                    each curriculumn in data
+                        tr
+                            td
+                                a(href='curriculumn/edit/'+curriculumn._id)= curriculumn.name

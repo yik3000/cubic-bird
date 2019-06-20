@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  h1 新队员
+  hr
+  .row
+    .col-md-6
+        form(id="add-coach-form", method="POST")
+            input(type='hidden', name='_csrf', value=_csrf)
+            label(for="name")
+                input(name="name", value='', placeholder='名字')          
+            button(type = "submit") 确定
