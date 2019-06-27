@@ -1,6 +1,6 @@
 =======================
 
-**Live Demo**: https://
+**Live Demo**: http://104.156.225.137:8080/
 
 A Web application for **Cubic Bird Coding Acadamy** student and teacher management.
 
