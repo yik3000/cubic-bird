@@ -12,6 +12,7 @@ block content
         .row
             .col-md-5
                 div=data.name
+                input.name.form-control(type="text", name="className", value=data.name)
                 each course in data.courses
                     .course(data-course=course._id)
                         div= course.name
@@ -29,20 +30,29 @@ block script
                 e.preventDefault();
                 var form = $(this);
 
+
                 var timetable = [];
+                var newName = form.find("input[name='className']").first().val();
                 $('div[data-course]').each(function(index,course){
                     timetable.push({
                         course: $(course).data("course"),
                         date: $(course).find("input[type='hidden']").first().val(),                     
-                        time: $(course).find("input.time").first().val()
+                        time: $(course).find("input.time").first().val(),
                     })
                 })
 
                 $.post( form.attr('action'), { 
                     _csrf:"#{_csrf}",
-                    timetable: timetable 
+                    timetable: timetable,
+                    name: newName,
                 }, function(data){
-                    alert(data); // Alert the return from the server
+                    var response = $.parseJSON(data);
+                    if(response.success == true){
+                        alert('Done');
+                    }
+                    else{
+                        alert('Not done');
+                    }
                 }, "text" );
             });
 

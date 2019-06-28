@@ -30,6 +30,7 @@ exports.edit = (req, res) =>{
                 .exec(next)
         },
     ],function(err,classroom){
+        console.log(classroom);
         res.render('classroom/edit', {
             data: classroom,
           });              
@@ -37,7 +38,8 @@ exports.edit = (req, res) =>{
 }
 exports.postEdit = (req, res) =>{
     var timeTable = req.body.timetable;
-
+    var newName = req.body.name;
+   
     timeTable.map(x=>{
         var fulltime= x.date + "T" + x.time + "Z";
         var date = Date.parse(fulltime);
@@ -49,16 +51,16 @@ exports.postEdit = (req, res) =>{
             Classroom.findOne({ _id:req.params.id }).exec(next);
         },
         function(classroom,next){
-            console.log(classroom);
             classroom.courses.map(course => {
                  var updatedTime = timeTable.filter(y=>y.course == course._id)[0];
-                 course.date = updatedTime.datetime;                 
+                 course.date = updatedTime.datetime;       
             })
-
-            console.log(classroom);
+            classroom.name = newName;      
+            Classroom.findOneAndUpdate({_id:req.params.id}, classroom, next);
         }
     ],function(err,result){
-        res.redirect('../classroom/');     
+        //res.redirect('../classroom/');     
+        res.json({success:true})
     })
 
 }
@@ -75,13 +77,26 @@ exports.addOne = (req, res) =>{
     })
 }
 
-exports.postAddOne = (req, res) =>{
-    console.log(req.body)
+exports.postAddOne = (req, res) =>{   
     async.waterfall([
         function(next){
-            Curriculumn.findOne({_id:req.body.curriculumnId}).populate("courses").lean().exec(next)
+            Curriculumn.findOne({_id:req.body.curriculumnId}).lean().populate({
+                path:'courses',
+                populate:{
+                    path:'ratings',
+                }
+            }).lean().exec(next)
         },
         function(curriculumn,next){
+            curriculumn.courses.forEach(x=>{
+                x.ratings = x.ratings.map(y=>{
+                    return {
+                        _id: y._id,
+                        name: y.name,
+                        score: 0,
+                    }
+                })    
+            })                       
             var classRoom = new Classroom({
                 name: "新课程",
                 curriculumn: curriculumn._id,
@@ -105,11 +120,20 @@ exports.addTwo = (req,res) =>{
             Classroom.findById({_id:req.params.id}).lean().exec(next)
         },
         function(classroom, next){
-            Courses.find({}).lean().exec(function(err, courses){
+            Courses.find({}).populate('ratings').lean().exec(function(err, courses){
                 next(null,classroom, courses)
             })
         }
     ],function(err,classroom, courses){
+        courses.forEach(x=>{
+            x.ratings = x.ratings.map(y=>{
+                return {
+                    _id: y._id,
+                    name: y.name,
+                    score: 0,
+                }
+            })    
+        })
         res.render('classroom/add2',{ data:classroom, courses: courses  })
     })
 }
@@ -124,7 +148,8 @@ exports.postAddTwo = (req, res) =>{
             date: new Date(),
             duration:x.duration,
             startTime: new Date(),
-            done: false,            
+            done: false,    
+            ratings:x.ratings,        
         }
     })
     async.waterfall([
@@ -134,7 +159,6 @@ exports.postAddTwo = (req, res) =>{
             }, next);
         }
     ],function(err){
-        console.log(err);
         res.redirect('../../classroom/add3/'+req.params.id)
     })
 }

@@ -8,6 +8,9 @@ exports.index = (req, res) => {
             Student.find({}).exec(next)
         },
     ],function(err,list){
+        console.log(res);
+        console.log('lalal')
+    
         res.render('bird/list', {
             title: 'Student',
             data:list,

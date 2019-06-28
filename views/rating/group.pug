@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+    h1=data.name
+    form.form(name="name", method="post")
+        input(type='hidden', name='_csrf', value=_csrf)           
+        input.input(type="text",name="name", value=data.name)
+        input.btn.btn-success(type="submit")
+    hr
+    .row
+        .col-md-6
+            table.table
+                thead
+                    tr
+                        td 指标
+                tbody
+                    each rating in data.ratings
+                        tr
+                            td
+                                a(href=data._id + "/rating/" + rating._id)=rating.name
+            form(name="rating", method="post", action= data._id+"/item")
+                input(type='hidden', name='_csrf', value=_csrf)           
+                label(for="ratingName")
+                input(type="text",name="ratingName")
+                input.btn.btn-primary(type="submit", action="group",value="增加")
+
+    
+
+block script
+    script.
+        $(function(){
+
+        })

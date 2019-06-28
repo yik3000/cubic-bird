@@ -1,6 +1,9 @@
 const Course = require('../models/Course');
 const Roles = require('../lib/role.js');
 const async = require('async')
+const Rating = require('../models/Rating').Rating;
+const RatingGroup = require('../models/Rating').RatingGroup;
+
 
 exports.index = (req, res) => {
     async.waterfall([
@@ -45,24 +48,51 @@ exports.postAdd = (req, res) =>{
 exports.getEdit = (req,res) =>{
     async.waterfall([
         function(next){
-            Course.findOne({_id:req.params.id}).exec(next)
+            Course.findOne({_id:req.params.id}).lean().populate('ratings').exec(next)
+        },
+        function(course, next){
+            RatingGroup.find({}).lean().populate('ratings').exec(function(err,ratingGroups){
+                next(err,course,ratingGroups);
+            })
+        },
+        function(course,ratingGroups,next){
+            var flatData = ratingGroups.map(function(group){
+                var ratings = group.ratings.map(function(rating){
+                    rating.group = group.name;
+                    return rating;
+                })               
+                return ratings;
+            })
+            var flatData = flatData.reduce(function(val,item){
+                if(item){
+                    (item).forEach(element => {
+                        val.push(element)
+                    });
+                    return val;
+                }               
+            },[])
+            next(null,course,flatData);
         }
-    ],function(err,data){
-    
+    ],function(err,data,ratingGroups){
         res.render('course/edit',{
             title:'edit',
             data: data,
+            ratings:ratingGroups,
         })
     })
 }
 
 
 exports.postEdit = (req,res) =>{
-  
+    console.log(req.body);
+    var ratings = JSON.parse(req.body.ratings);
     async.waterfall([
         function(next){
             Course.findOneAndUpdate({_id:req.params.id}, {
                 name:req.body.name,
+                ratings:ratings.map(function(item){
+                    return item._id
+                })
             }).exec(next)
         }
     ],function(err,data){        

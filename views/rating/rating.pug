@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  h1 更新
+  hr
+  .row
+    .col-md-6
+        form(id="edit-course-form", method="POST")
+            input(type='hidden', name='_csrf', value=_csrf)            
+            label(for="name") 名字
+                input(name="name", value=data.name, placeholder='名字')         
+            button(type = "submit") 更新

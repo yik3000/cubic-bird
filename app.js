@@ -164,8 +164,6 @@ app.get('/bird/edit/:id',studentController.getEdit);
 app.post('/bird/edit/:id',studentController.postEdit);
 
 
-
-
 app.get('/course', courseController.index);
 app.get('/course/add', courseController.add);
 app.post('/course/add', courseController.postAdd);
@@ -194,8 +192,11 @@ app.post('/classroom/add4/:id',classRoomController.postAddFour);
 app.get('/rating',ratingController.index);
 app.post('/rating/group',ratingController.addGroup);
 app.get('/rating/group',ratingController.addGroup);
-
-
+app.get('/rating/group/:id', ratingController.showGroup);
+app.post('/rating/group/:id', ratingController.postGroup);
+app.post('/rating/group/:id/item', ratingController.addItem);
+app.get('/rating/group/:id/rating/:ratingId', ratingController.showRating);
+app.post('/rating/group/:id/rating/:ratingId', ratingController.editRating);
 
 const apiWechatController = require('./api/wechat');
 apiWechatController(app,config);

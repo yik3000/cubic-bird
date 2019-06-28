@@ -8,18 +8,19 @@ block content
             table.table
                 thead
                     tr
+                        td
                         td 能理范围
                 tbody
                     each ratingGroup in data
                         tr
                             td
-                                =ratingGroup.name
+                                a(href="./rating/group/"+ratingGroup._id)| 详细
+                            td=ratingGroup.name
             form(name="group",action="rating/group")
                 label(for="groupName")
                 input(type="text",name="groupName")
                 input(type="submit", action="group")
 
-        a.btn.btn-raised(href='classroom/add', role='button') Add
 
 block script
     script.

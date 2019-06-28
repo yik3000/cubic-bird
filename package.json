@@ -13,6 +13,7 @@
     "postinstall": "npm rebuild node-sass",
     "start": "node app.js",
     "test": "nyc mocha --timeout=10000 --exit",
+    "t": "mocha --exit",
     "lint": "eslint \"**/*.js\""
   },
   "dependencies": {
@@ -23,6 +24,7 @@
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.3.1",
+    "chai-http": "^4.3.0",
     "chalk": "^2.4.2",
     "chart.js": "^2.8.0",
     "cheerio": "^1.0.0-rc.3",

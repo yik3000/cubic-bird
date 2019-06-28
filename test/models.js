@@ -4,6 +4,7 @@ require('sinon-mongoose');
 
 const User = require('../models/User');
 
+/*
 describe('User Model', () => {
   it('should create a new user', (done) => {
     const UserMock = sinon.mock(new User({ email: 'test@gmail.com', password: 'root' }));
@@ -103,3 +104,4 @@ describe('User Model', () => {
     });
   });
 });
+*/

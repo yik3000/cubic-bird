@@ -1,12 +1,57 @@
 extends ../layout
 
+
 block content
   h1 更新
   hr
   .row
     .col-md-6
         form(id="edit-course-form", method="POST")
-            input(type='hidden', name='_csrf', value=_csrf)            
+            input(type='hidden', name='_csrf', value=_csrf)      
+            input(type="hidden", name="ratings", id="ratings")      
             label(for="name") 名字
                 input(name="name", value=data.name, placeholder='名字')         
             button(type = "submit") 更新
+  .row
+    .col-md-6
+      div 选中指标
+      .pick-list
+        table.table.target-list.ratings
+
+    .col-md-6
+      div 总指标
+      .pick-list
+        table.table.source-list.ratings
+
+    .btn.btn-primary(id="btn-save")
+      i.fa.fa-user
+        | 更新
+      
+      
+block script
+  script(src="/js/modules/picklist.js")
+  script.
+    $(function(){
+        var ratings = !{JSON.stringify(ratings)}        
+        var includeRatings = !{JSON.stringify(data.ratings)}
+        
+        includeRatings = includeRatings.map(function(x){
+          x.label = x.name
+          return x;
+        })
+             
+        
+        ratings = ratings.map(function(item){
+          item.label = item.name;
+          return item;
+        })
+        
+        var ratingPickList = new PickList();
+        ratingPickList.init('.target-list.ratings', '.source-list.ratings', includeRatings ,ratings);	
+        
+        $("#btn-save").on("click",function(event){
+            var ratingData = ratingPickList.data();
+            $('#ratings').val(JSON.stringify(ratingData))
+            $('form').submit()
+    		})
+    })

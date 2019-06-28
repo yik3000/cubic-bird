@@ -9,6 +9,7 @@ block content
             table.table
                 thead
                     tr
+                        td
                         td 课堂名
                         td 教练
                         td 学生
@@ -16,7 +17,8 @@ block content
                     each classroom in data
                         tr
                             td
-                                a(href='classroom/edit/'+classroom._id)= classroom.name
+                                a(href='classroom/edit/'+classroom._id)| 详细
+                            td= classroom.name
                             td
                                 ul
                                     each coach in classroom.coaches
