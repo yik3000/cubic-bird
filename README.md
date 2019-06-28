@@ -1,6 +1,6 @@
 =======================
 
-**Live Demo**: https://
+**Live Demo**: http://104.156.225.137:8080/
 
 A Web application for **Cubic Bird Coding Acadamy** student and teacher management.
 
@@ -91,44 +91,22 @@ List of Packages
 | express-session                 | Simple session middleware for Express.                                  |
 | express-status-monitor          | Reports real-time server metrics for Express.                           |
 | express-validator               | Easy form validation for Express.                                       |
-| fbgraph                         | Facebook Graph API library.                                             |
-| instagram-node                  | Instagram API library.                                                  |
-| lastfm                          | Last.fm API library.                                                    |
-| lob                             | Lob API library.                                                        |
 | lodash                          | A utility library for working with arrays, numbers, objects, strings.   |
 | lusca                           | CSRF middleware.                                                        |
 | mocha                           | Test framework.                                                         |
 | mongoose                        | MongoDB ODM.                                                            |
 | morgan                          | HTTP request logger middleware for node.js.                             |
 | multer                          | Node.js middleware for handling `multipart/form-data`.                  |
-| node-foursquare                 | Foursquare API library.                                                 |
-| node-linkedin                   | LinkedIn API library.                                                   |
 | node-sass                       | Node.js bindings to libsass.                                            |
 | node-sass-middleware            | Sass middleware compiler.                                               |
 | nyc                             | Coverage test.                                                          |
 | nodemailer                      | Node.js library for sending emails.                                     |
 | passport                        | Simple and elegant authentication library for node.js.                  |
-| passport-facebook               | Sign-in with Facebook plugin.                                           |
-| passport-github                 | Sign-in with GitHub plugin.                                             |
-| passport-google-oauth           | Sign-in with Google plugin.                                             |
-| passport-instagram              | Sign-in with Instagram plugin.                                          |
-| passport-linkedin-oauth2        | Sign-in with LinkedIn plugin.                                           |
 | passport-local                  | Sign-in with Username and Password plugin.                              |
-| passport-openid                 | Sign-in with OpenId plugin.                                             |
-| passport-oauth                  | Allows you to set up your own OAuth 1.0a and OAuth 2.0 strategies.      |
-| passport-snapchat               | Sign-in with Snapchat plugin.                                           |
-| passport-twitter                | Sign-in with Twitter plugin.                                            |
-| paypal-rest-sdk                 | PayPal APIs library.                                                    |
 | pug (jade)                      | Template engine for Express.                                            |
 | request                         | Simplified HTTP request library.                                        |
 | sinon                           | Test spies, stubs and mocks for JavaScript.                             |
 | sinon-mongoose                  | Extend Sinon stubs for Mongoose methods to test chained methods easily. |
-| stripe                          | Offical Stripe API library.                                             |
-| supertest                       | HTTP assertion library.                                                 |
-| tumblr.js                       | Tumblr API library.                                                     |
-| twilio                          | Twilio API library.                                                     |
-| twit                            | Twitter API library.                                                    |
-| validator                       | Used in conjunction with express-validator in **controllers/api.js**.   |
 
 
 
