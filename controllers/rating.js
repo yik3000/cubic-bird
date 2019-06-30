@@ -30,22 +30,22 @@ exports.showGroup = (req,res) =>{
 }
 
 exports.addGroup = (req, res) =>{
-    var group = req.body;
+    var groupName = req.body.groupName
     async.waterfall([
         function(next){
             var newRatingGroup = new RatingGroup({
-                name: group.groupName,
+                name: groupName,
                 ratings:[],
             })
             newRatingGroup.save(function(err,item){
                 next(err,item);
             });
         },
-        function(next,ratingGroup){
-            RatingGroup.find().exec(next);
+        function(ratingGroup,next){
+           next(null);
         }
     ],function(err,list){
-        res.redirect('rating')
+        res.redirect('../rating')
     });
 }
 

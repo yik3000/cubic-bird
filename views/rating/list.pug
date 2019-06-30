@@ -16,16 +16,17 @@ block content
                             td
                                 a(href="./rating/group/"+ratingGroup._id)| 详细
                             td=ratingGroup.name
-            form(name="group",action="rating/group")
+            form(name="group",action="rating/group", method="POST")
+                input(type='hidden', name='_csrf', value=_csrf)    
                 label(for="groupName")
                 input(type="text",name="groupName")
-                input(type="submit", action="group")
+                input(type="submit")
 
 
 block script
     script.
         $(function(){
-
+            /*
              $('form[name="group"]').submit(function(e) { 
                 e.preventDefault();
                 var form = $(this);
@@ -37,5 +38,5 @@ block script
                 }, "text" );
             });
 
-
+            */
         })
