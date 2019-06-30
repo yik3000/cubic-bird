@@ -228,7 +228,7 @@ exports.postAddFour = (req, res) =>{
         function(next){
             Classroom.findOneAndUpdate({_id:req.params.id},{
                 students:selectedIds
-            }, next);
+            },{new:true}, next);
         },
         function(classroom, next){
             Student.find({_id:{$in: classroom.students}}).lean().exec(function(err, students){
@@ -248,14 +248,18 @@ exports.postAddFour = (req, res) =>{
                             score: rating.score,
                             memo: '',
                             });
+                        
                         insertRatings.push(newRating);
                     });          
                 })
             });            
+            console.log(insertRatings);
             next(null, classroom, students, insertRatings); 
         },
         function(classroom,students,insertRatings,next){
-            RatingStudent.deleteMany({_student:{$in:students.map(x=>x._id)},classroom:classroom._id}).exec(function(err){
+            var studentIds = students.map(x=>x._id.toString());
+            var classRoomId = classroom._id;
+            RatingStudent.deleteMany({student:{$in:studentIds},classRoom:classRoomId}).exec(function(err, result){
                 next(err,insertRatings);
             });
         },
