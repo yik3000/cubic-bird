@@ -123,11 +123,16 @@ exports.addTwo = (req,res) =>{
             Classroom.findById({_id:req.params.id}).lean().exec(next)
         },
         function(classroom, next){
-            Courses.find({}).populate('ratings').lean().exec(function(err, courses){
-                next(null,classroom, courses)
-            })
+            Courses.find({})
+                .populate('ratings').lean()
+                .exec(function(err, courses){  
+                    console.log(courses);
+                    console.log("done");
+                    next(err,classroom, courses)
+                })
         }
-    ],function(err,classroom, courses){
+    ], function(err,classroom, courses){
+        console.log(err);
         courses.forEach(x=>{
             x.ratings = x.ratings.map(y=>{
                 return {
