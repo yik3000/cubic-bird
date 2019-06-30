@@ -5,6 +5,9 @@ const Curriculumn = require("../models/Curriculumn");
 const Courses = require('../models/Course');
 const Roles = require('../lib/role.js');
 const async = require('async')
+const RatingStudent = require('../models/Rating').RatingStudent;
+const Rating = require('../models/Rating').Rating;
+
 
 exports.index = (req, res) => {
     async.waterfall([
@@ -200,7 +203,7 @@ exports.postAddThree = (req, res) =>{
 exports.addFour = (req,res) =>{   
     async.waterfall([
         function(next){
-            Classroom.findById({_id:req.params.id}).lean().exec(next)
+            Classroom.findById({_id:req.params.id}).populate('students').lean().exec(next)
         },
         function(classroom, next){
             Student.find({}).lean().exec(function(err, students){
@@ -215,18 +218,94 @@ exports.addFour = (req,res) =>{
 exports.postAddFour = (req, res) =>{
     var selectedStudents = JSON.parse(req.body.students)
     var selectedIds  = selectedStudents.map(x=>x._id);
-
+    console.log(selectedIds);
     async.waterfall([
         function(next){
             Classroom.findOneAndUpdate({_id:req.params.id},{
                 students:selectedIds
             }, next);
+        },
+        function(classroom, next){
+            Student.find({_id:{$in: classroom.students}}).lean().exec(function(err, students){
+                next(err,classroom, students)
+            });
+        },
+        function(classroom, students,next){
+            var insertRatings = [];
+            students.forEach(function(student){
+                classroom.courses.forEach(function(course){
+                    course.ratings.forEach(function(rating){
+                        var newRating = new RatingStudent({
+                            student:student._id,
+                            course:course._id,
+                            classRoom:classroom._id,
+                            rating: rating._id,
+                            score: rating.score,
+                            memo: '',
+                            });
+                        insertRatings.push(newRating);
+                    });          
+                })
+            });            
+            next(null, classroom, students, insertRatings); 
+        },
+        function(classroom,students,insertRatings,next){
+            RatingStudent.deleteMany({_student:{$in:students.map(x=>x._id)},classroom:classroom._id}).exec(function(err){
+                next(err,insertRatings);
+            });
+        },
+        function(insertRatings,next){
+            RatingStudent.insertMany(insertRatings,function(err,result){
+                next(err,result)
+            });
         }
     ],function(err){
         res.redirect('../../classroom')
-    })
+    });
 }
 
-
+exports.getReview = (req, res) =>{
+    var classId = req.params.id;
+    var studentId = req.params.studentId;
+    async.waterfall([
+        function(next){
+            RatingStudent.find({student:studentId,classRoom:classId})
+                .populate('course')
+                //.populate('classRoom')
+                .populate('rating')
+                .lean().exec(next);
+        },
+        function(ratingStudent,next){
+            Student.findOne({_id:studentId}).exec(function(err,student){
+                next(null, student, ratingStudent);
+            });
+        }
+    ],function(err,student,data){
+        res.render('classroom/review', {data: data, student:student});
+    })
+}
+exports.postReview = (req,res)=>{
+    var classId = req.params.id;
+    var studentId = req.params.studentId;
+    async.waterfall([
+        function(next){
+            RatingStudent.find({student:studentId,classRoom:classId}).exec(next)
+        },
+        function(ratings, next){
+            var data = req.body;
+            ratings.forEach(function(rating){
+                rating.score = data.score[rating._id];
+                rating.memo = data.memo[rating._id];
+            });
+            async.parallel(ratings.map(y=>{
+                return function(cb){
+                    y.save(cb);
+                }
+            }),next);
+        }
+    ],function(err){
+        res.redirect('../../../../classroom');
+    })
+}
 
 

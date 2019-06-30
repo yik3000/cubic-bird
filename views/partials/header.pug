@@ -1,7 +1,7 @@
 .navbar.navbar-light.fixed-top.navbar-expand-lg
   .container
     a.navbar-brand(href='/')
-      i.fas.fa-cube
+      img.logo(src="logo.png")
       | Cubic Nest
     button.navbar-toggler(type='button', data-toggle='collapse', data-target='.navbar-collapse')
       span.sr-only Toggle navigation
@@ -23,9 +23,9 @@
       ul.nav.navbar-nav.ml-auto
         if !user
           li.nav-item(class=(title === 'Login') ? 'active' : undefined)
-            a.nav-link(href='/login') Login
+            a.nav-link(href='/login') 登陆
           li.nav-item(class=(title === 'Create Account') ? 'active' : undefined)
-            a.nav-link(href='/signup') Create Account
+            a.nav-link(href='/signup') 注册号
         else
           li.dropdown(class=(title === 'Account Management') ? 'active' : undefined).nav-item
             a.dropdown-toggle.nav-link(href='#', data-toggle='dropdown')
@@ -37,7 +37,7 @@
               i.caret
             ul.dropdown-menu
               li.dropdown-item
-                a(href='/account') My Account
+                a(href='/account') 我的账号
               li.divider.dropdown-item
               li.dropdown-item
-                a(href='/logout') Logout
+                a(href='/logout') 注销

@@ -179,6 +179,8 @@ app.post('/curriculumn/edit/:id',curriculmnController.postEdit);
 app.get('/classroom',classRoomController.index);
 app.get('/classroom/edit/:id', classRoomController.edit);
 app.post('/classroom/edit/:id', classRoomController.postEdit);
+app.get('/classroom/edit/:id/review/:studentId', classRoomController.getReview);
+app.post('/classroom/edit/:id/review/:studentId', classRoomController.postReview);
 
 app.get('/classroom/add', classRoomController.addOne);
 app.post('/classroom/add', classRoomController.postAddOne);
@@ -197,6 +199,7 @@ app.post('/rating/group/:id', ratingController.postGroup);
 app.post('/rating/group/:id/item', ratingController.addItem);
 app.get('/rating/group/:id/rating/:ratingId', ratingController.showRating);
 app.post('/rating/group/:id/rating/:ratingId', ratingController.editRating);
+
 
 const apiWechatController = require('./api/wechat');
 apiWechatController(app,config);

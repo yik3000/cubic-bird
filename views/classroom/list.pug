@@ -26,5 +26,6 @@ block content
                             td
                                 ul
                                     each student in classroom.students
-                                        li=student.name
+                                        a(href='classroom/edit/'+classroom._id+"/review/"+student._id)
+                                            li=student.name
             

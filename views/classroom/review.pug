@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+    h1= student.name +'的课程总结'
+    hr
+    .row
+        .col-md-12
+            form.container-fluid.form-horizontal(method='POST')
+                input(type='hidden', name='_csrf', value=_csrf)   
+                table.table
+                    thead
+                        tr
+                            td 能力
+                            td 打分
+                            td 评语
+                    tbody
+                        each rating in data
+                            tr
+                                td
+                                    div= rating.rating.name
+                                td.btn-group
+                                    div.check-row
+                                        input.form-check-input(type="radio",name="score["+rating._id+"]", checked=rating.score == 1, value="1")
+                                        label(for="score1")
+                                            | 努力
+                                    div.check-row
+                                        input.form-check-input(type="radio",name="score["+rating._id+"]", checked=rating.score==2, value="2")
+                                        label(for="score2")
+                                            | 满意
+                                    div.check-row
+                                        input.form-check-input(type="radio",name="score["+rating._id+"]", checked=rating.score==3, value="3")
+                                        label(for="score3")
+                                            | 优秀
+                                td
+                                    textarea.form-control(row="5",name="memo["+ rating._id +"]")=rating.memo
+                input(type="submit",value="提交")
